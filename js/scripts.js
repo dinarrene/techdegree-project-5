@@ -1,4 +1,5 @@
 const randEmployees = 'https://randomuser.me/api/?nat=us&results=12';
+const body = document.querySelector('body');
 const gallery = document.getElementById('gallery');
 let employeeData = [];
 
@@ -18,8 +19,10 @@ fetchData(randEmployees)
 
     cards.forEach(card => {
       card.addEventListener('click', (e) => {
-        console.log(cardsArray.indexOf(e.target));
-      })
+        const clickedCard = e.target.closest('.card')
+        const cardIndex = cardsArray.indexOf(clickedCard);
+        generateModal(employeeData[cardIndex], cardIndex);
+      }) 
     })
   });
 
@@ -50,28 +53,51 @@ function generateCard(data) {
 
 
 
+function generateModal(employee, index) {
+  const modalHtml = `
+    <div class="modal-container">
+      <div class="modal">
+          <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+          <div class="modal-info-container">
+              <img class="modal-img" src="${employee.picture.large}" alt="profile picture">
+              <h3 id="name" class="modal-name cap">${employee.name.first} ${employee.name.last}</h3>
+              <p class="modal-text">${employee.email}</p>
+              <p class="modal-text cap">${employee.location.city}</p>
+              <hr>
+              <p class="modal-text">${employee.cell.replace(/-/, ' ')}</p>
+              <p class="modal-text">${employee.location.street.number} ${employee.location.street.name} ${employee.location.city}, ${employee.location.state} ${employee.location.postcode}</p>
+              <p class="modal-text">Birthday: ${employee.dob.date.slice(5,7)}/${employee.dob.date.slice(8,10)}/${employee.dob.date.slice(2,4)}</p>
+          </div>
+      </div>
+    `;
+  body.insertAdjacentHTML('beforeend', modalHtml)
 
 
-function generateModal() {
-  // <div class="modal-container">
-  //     <div class="modal">
-  //         <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-  //         <div class="modal-info-container">
-  //             <img class="modal-img" src="https://placehold.it/125x125" alt="profile picture">
-  //             <h3 id="name" class="modal-name cap">name</h3>
-  //             <p class="modal-text">email</p>
-  //             <p class="modal-text cap">city</p>
-  //             <hr>
-  //             <p class="modal-text">(555) 555-5555</p>
-  //             <p class="modal-text">123 Portland Ave., Portland, OR 97204</p>
-  //             <p class="modal-text">Birthday: 10/21/2015</p>
-  //         </div>
-  //     </div>
+  const modal = document.querySelector('.modal-container');
+  const closeBtn = document.querySelector('.modal-close-btn');
 
-  //     <div class="modal-btn-container">
-  //         <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
-  //         <button type="button" id="modal-next" class="modal-next btn">Next</button>
-  //     </div>
-  // </div>
+  function removeModal(){
+    if(modal){
+      modal.remove();
+    }
+  }
+
+  modal.addEventListener('click', (e) => {
+    if(e.target.className === 'modal-container') {
+      removeModal();
+    }
+  })
+
+  closeBtn.addEventListener('click', (e) => {
+    const clickedCloseBtn = e.target.closest('.modal-close-btn')
+    if(clickedCloseBtn.className === 'modal-close-btn') {
+      removeModal();
+    }
+  })
 }
+
+
+
+
+
 
