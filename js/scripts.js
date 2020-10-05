@@ -1,3 +1,7 @@
+// ------------------------------------------
+//  Global Variables
+// ------------------------------------------
+
 const randEmployees = 'https://randomuser.me/api/?nat=us&results=12';
 const body = document.querySelector('body');
 const gallery = document.getElementById('gallery');
@@ -5,6 +9,10 @@ const searchContainer = document.querySelector('.search-container')
 let cardsArray = [];
 let employeeData = [];
 let cardIndex = ''
+
+// ------------------------------------------
+//  FETCH API REQUEST
+// ------------------------------------------
 
 function fetchData(url) {
   return fetch(url)
@@ -35,6 +43,8 @@ generateSearch();
 //  HELPER FUNCTIONS
 // ------------------------------------------
 
+//HTML TO GENERATE/ADD SEARCH FIELD FUNCTION
+
 function generateSearch() {
   const searchHtml = `
     <form action="#" method="get">
@@ -47,6 +57,9 @@ function generateSearch() {
 
 const searchInput = document.querySelector('.search-input');
 const searchSubmit = document.querySelector('.search-submit');
+
+
+// SEARCH EMPLOYEE RECORDS FUNCTION
 
 function searchEmployees(searchInput, searchList) {
 
@@ -61,8 +74,13 @@ function searchEmployees(searchInput, searchList) {
 }
 
 
+// SEARCH FIELD EVENT LISTENERS 
 
 searchInput.addEventListener('keyup', () => {
+  searchEmployees(searchInput, cardsArray);
+});
+
+searchSubmit.addEventListener('click', (e) => {
   searchEmployees(searchInput, cardsArray);
 });
 
@@ -72,12 +90,8 @@ searchInput.addEventListener('keyup', () => {
 //   }
 // });
 
-searchSubmit.addEventListener('click', (e) => {
-  searchEmployees(searchInput, cardsArray);
-});
 
-
-
+// CREATE HTML FOR EMPLOYEE CARDS FUNCTION
 
 function generateCard(data) {
   data.map(employee => {
@@ -98,6 +112,7 @@ function generateCard(data) {
 }
 
 
+// CREATE HTML FOR MODAL OVERLAY
 
 function generateModal(employee, index) {
   const modalHtml = ` 
@@ -125,16 +140,34 @@ function generateModal(employee, index) {
   body.insertAdjacentHTML('beforeend', modalHtml)
 
 
+  // MODAL VARIABLES
+
   const modal = document.querySelector('.modal-container');
   const closeBtn = document.querySelector('.modal-close-btn');
   const prevBtn = document.querySelector('.modal-prev');
   const nextBtn = document.querySelector('.modal-next');
+
+
+  // REMOVE MODAL FUNCTION
 
   function removeModal() {
     if (modal) {
       modal.remove();
     }
   }
+
+  
+  // TOGGLE THROUGH MODAL RECORDS FUNCTION
+
+  function toggleModal(employee, index) {
+    document.querySelector('.modal-container').remove();
+    generateModal(employee, index);
+  }
+
+
+  // ------------------------------------------
+  //  MODAL EVENT LISTENERS
+  // ------------------------------------------
 
   modal.addEventListener('click', (e) => {
     if (e.target.className === 'modal-container') {
@@ -160,11 +193,6 @@ function generateModal(employee, index) {
       toggleModal(employeeData[index +1], index +1);
     }
   }) 
-  
-  function toggleModal(employee, index) {
-    document.querySelector('.modal-container').remove();
-    generateModal(employee, index);
-  }
 }
 
 
