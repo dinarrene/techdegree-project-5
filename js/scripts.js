@@ -8,7 +8,7 @@ const gallery = document.getElementById('gallery');
 const searchContainer = document.querySelector('.search-container')
 let cardsArray = [];
 let employeeData = [];
-let cardIndex = ''
+let index = ''
 
 // ------------------------------------------
 //  FETCH API REQUEST
@@ -31,8 +31,8 @@ fetchData(randEmployees)
     cards.forEach(card => {
       card.addEventListener('click', (e) => {
         const clickedCard = e.target.closest('.card')
-        cardIndex = cardsArray.indexOf(clickedCard);
-        generateModal(employeeData[cardIndex], cardIndex);
+        index = cardsArray.indexOf(clickedCard);
+        generateModal(employeeData[index], index);
       })
     })
   });
@@ -66,7 +66,7 @@ function searchEmployees(searchInput, searchList) {
   for (let i = 0; i < searchList.length; i++) {
     let employeeName = searchList[i].querySelector('#name').textContent;
     if (employeeName.toLowerCase().includes(searchInput.value.toLowerCase())) {
-      searchList[i].style.display = 'block';
+      searchList[i].style.display = '';
     } else {
       searchList[i].style.display = 'none';
     }
@@ -77,6 +77,10 @@ function searchEmployees(searchInput, searchList) {
 // SEARCH FIELD EVENT LISTENERS 
 
 searchInput.addEventListener('keyup', () => {
+  searchEmployees(searchInput, cardsArray);
+});
+
+searchInput.addEventListener('search', () => {
   searchEmployees(searchInput, cardsArray);
 });
 
@@ -156,7 +160,7 @@ function generateModal(employee, index) {
     }
   }
 
-  
+
   // TOGGLE THROUGH MODAL RECORDS FUNCTION
 
   function toggleModal(employee, index) {
