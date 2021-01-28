@@ -88,11 +88,6 @@ searchSubmit.addEventListener('click', (e) => {
   searchEmployees(searchInput, cardsArray);
 });
 
-// searchInput.addEventListener('click', () => {
-//   for(let i = 0; i < cardsArray.length; i++) {
-//     cardsArray[i].style.display = 'none';
-//   }
-// });
 
 
 // CREATE HTML FOR EMPLOYEE CARDS FUNCTION
@@ -187,16 +182,14 @@ function generateModal(employee, index) {
   })
 
   prevBtn.addEventListener('click', (e) => {
-    if(index > 0) {
-      toggleModal(employeeData[index -1], index -1);
+    if (index > 0) {
+      toggleModal(employeeData[index - 1], index - 1);
     }
   })
 
   nextBtn.addEventListener('click', (e) => {
-    if(index < 11) {
-      toggleModal(employeeData[index +1], index +1);
+    if (index < 11) {
+      toggleModal(employeeData[index + 1], index + 1);
     }
-  }) 
+  })
 }
-
-
